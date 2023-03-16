@@ -4,4 +4,26 @@
 $.ajaxPrefilter(function (options) {
   options.url = "http://www.liulongbin.top:3007" + options.url;
   //   console.log(options.url); http://www.liulongbin.top:3007/api/login
+
+  // 统一为有权限的接口(api)  设置请求头
+  if (options.url.indexOf("/my/") !== -1) {
+    options.headers = {
+      Authorization: localStorage.getItem("token") || "",
+    };
+  }
+
+  // 统一为 AJAX 挂在 compelte 函数
+  options.complete = function (res) {
+    //   console.log(res);
+    // 判断res返回值是否正确  若错误  则强制返回登录页
+    if (
+      res.responseJSON.status === 1 &&
+      res.responseJSON.message === "身份认证失败！"
+    ) {
+      // 1. 清空token值
+      localStorage.removeItem("token");
+      // 2. 强制跳转到登录页
+      location.href = "/login.html";
+    }
+  };
 });

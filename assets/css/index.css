@@ -42,3 +42,9 @@ a {
     top: 4px;
     margin-right: 10px;
 }
+#welcome {
+    user-select: none;
+}
+.text-avatar {
+    user-select: none;
+}
